@@ -1,2 +1,2 @@
-# ersm_website
-A new website for a new studio ok!
+# ERSM Studio Website
+A local-hosted website for game development and animation courses.
