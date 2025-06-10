@@ -8,10 +8,14 @@ from sqlalchemy import MetaData
 from alembic import context
 
 # استيراد Base من models
-from app.models import Base  # غيّر هذا حسب مسار ملفك
+import sys
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'app')))
+from models import Base  # غيّر هذا حسب مسار ملفك
 
 # استخدم المتغير من البيئة
 DATABASE_URL = os.getenv("DATABASE_URL")
+
+
 
 # إعداد config
 config = context.config
