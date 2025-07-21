@@ -3,7 +3,7 @@ from sqlalchemy.orm import Session
 from pydantic import BaseModel
 from typing import List
 
-from .database import Base, engine, SessionLocal
+from database import Base, engine, SessionLocal
 from sqlalchemy import Column, Integer, String
 
 # ---------- Database Models ----------
