@@ -1,3 +1,15 @@
+# run.py — نقطة تشغيل تطبيق FastAPI باستخدام Uvicorn
+
 import uvicorn
-if __name__ == '__main__':
-    uvicorn.run('app.main:app', host='0.0.0.0', port=8000, reload=True)
+
+def start():
+    """تشغيل التطبيق باستخدام Uvicorn مع إعدادات التطوير."""
+    uvicorn.run(
+        app="app.main:app",      # المسار إلى تطبيق FastAPI
+        host="0.0.0.0",          # يجعله متاحًا عبر الشبكة المحلية أو من الإنترنت
+        port=8000,               # رقم البورت الذي يعمل عليه السيرفر
+        reload=True              # يُفعل إعادة التشغيل التلقائي عند تغيير الملفات (مناسب أثناء التطوير)
+    )
+
+if __name__ == "__main__":
+    start()
