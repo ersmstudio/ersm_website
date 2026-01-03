@@ -1,1 +1,18 @@
-body { background-color: #222; color: #eee; font-family: sans-serif; }
+body {
+
+    background-color: rgb(227, 224, 206);
+}
+
+.navbar {
+    background-color: rgb(250, 253, 151);
+    overflow: hidden;
+}
+
+.navbar a {
+    float: left;
+    display: block;
+    color: black;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+}

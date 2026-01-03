@@ -1,3 +1,4 @@
+<<<<<<< Updated upstream
 from fastapi import FastAPI, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 from typing import List
@@ -5,8 +6,7 @@ from passlib.context import CryptContext
 
 from . import models, schemas, database
 
-# create tables using the Base defined in database.py
-database.Base.metadata.create_all(bind=database.engine)
+models.Base.metadata.create_all(bind=database.engine)
 
 app = FastAPI(
     title="FastAPI + PostgreSQL API 🚀",
@@ -14,11 +14,37 @@ app = FastAPI(
     version="1.0.0"
 )
 
+<<<<<<< Updated upstream
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 def get_password_hash(password: str):
     return pwd_context.hash(password)
 
+=======
+# إنشاء الجداول في قاعدة البيانات
+Base.metadata.create_all(bind=engine)
+
+# ---------- المخططات (Schemas) ----------
+
+class UserCreate(BaseModel):
+    name: str
+    email: str
+
+class UserOut(BaseModel):
+    id: int
+    name: str
+    email: str
+
+    class Config:
+        orm_mode = True
+
+# ---------- FastAPI ----------
+
+app = FastAPI(title="FastAPI + PostgreSQL API")
+
+# ---------- تبعية قاعدة البيانات ----------
+
+>>>>>>> Stashed changes
 def get_db():
     db = database.SessionLocal()
     try:
@@ -26,6 +52,7 @@ def get_db():
     finally:
         db.close()
 
+<<<<<<< Updated upstream
 @app.get("/", tags=["Root"])
 def read_root():
     return {"message": "🎉 Welcome to FastAPI + PostgreSQL API"}
@@ -42,6 +69,21 @@ def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
         hashed_password=hashed_pw,
         avatar_url=user.avatar_url
     )
+=======
+# ---------- الراوتات ----------
+
+@app.get("/", tags=["Root"])
+def read_root():
+    return {"message": "Welcome to FastAPI + PostgreSQL API 🎉"}
+
+@app.post("/users/", response_model=UserOut, tags=["Users"])
+def create_user(user: UserCreate, db: Session = Depends(get_db)):
+    existing_user = db.query(UserDB).filter(UserDB.email == user.email).first()
+    if existing_user:
+        raise HTTPException(status_code=400, detail="❌ Email already registered")
+    
+    new_user = UserDB(name=user.name, email=user.email)
+>>>>>>> Stashed changes
     db.add(new_user)
     db.commit()
     db.refresh(new_user)

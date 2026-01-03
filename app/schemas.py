@@ -1,3 +1,4 @@
+<<<<<<< Updated upstream
 from pydantic import BaseModel, EmailStr
 from typing import Optional
 
@@ -21,3 +22,6 @@ class UserOut(UserBase):
 
     class Config:
         orm_mode = True
+=======
+# Pydantic schemas go here
+>>>>>>> Stashed changes
