@@ -5,7 +5,8 @@ from passlib.context import CryptContext
 
 from . import models, schemas, database
 
-models.Base.metadata.create_all(bind=database.engine)
+# create tables using the Base defined in database.py
+database.Base.metadata.create_all(bind=database.engine)
 
 app = FastAPI(
     title="FastAPI + PostgreSQL API 🚀",
@@ -56,27 +57,26 @@ def update_user(user_id: int, data: schemas.UserUpdate, db: Session = Depends(ge
     if not user:
         raise HTTPException(status_code=404, detail="❌ User not found")
 
-    # تحديث البيانات فقط لو أُرسلت
+    # update only sent fields
     if data.username is not None:
-        user.username = data.username
+        setattr(user, "username", data.username)
 
     if data.email is not None:
-        # التأكد من أن الإيميل الجديد غير مستخدم
-        existing_user = db.query(models.UserDB).filter(models.UserDB.email == data.email).first()
-        if existing_user and existing_user.id != user.id:
+        # ensure new email isn't used by another user
+        existing_user_id = db.query(models.UserDB.id).filter(models.UserDB.email == data.email).scalar()
+        if existing_user_id is not None and existing_user_id != user.id:
             raise HTTPException(status_code=400, detail="❌ Email already in use by another user")
-        user.email = data.email
+        setattr(user, "email", data.email)
 
     if data.avatar_url is not None:
-        user.avatar_url = data.avatar_url
+        setattr(user, "avatar_url", data.avatar_url)
 
     if data.password is not None:
-        user.hashed_password = get_password_hash(data.password)
+        setattr(user, "hashed_password", get_password_hash(data.password))
 
     db.commit()
     db.refresh(user)
     return user
-
 
 @app.delete("/users/{user_id}", status_code=status.HTTP_200_OK, tags=["Users"])
 def delete_user(user_id: int, db: Session = Depends(get_db)):

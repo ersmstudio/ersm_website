@@ -1,6 +1,5 @@
 from pydantic import BaseModel, EmailStr
 from typing import Optional
-from datetime import datetime
 
 class UserBase(BaseModel):
     username: str
@@ -19,8 +18,6 @@ class UserUpdate(BaseModel):
 class UserOut(UserBase):
     id: int
     is_active: bool
-    created_at: datetime
-    avatar_url: Optional[str] = None  # ✅ لتضمينه في المخرجات
 
     class Config:
         orm_mode = True

@@ -9,9 +9,9 @@ class UserDB(Base):
     id = Column(Integer, primary_key=True, index=True)
     username = Column(String, unique=True, index=True)
     email = Column(String, unique=True, index=True)
-    hashed_password = Column(String)  # ✅ كان مكتوب password فقط
+    hashed_password = Column(String, nullable=False)
+    avatar_url = Column(String, nullable=True)
     is_active = Column(Boolean, default=True)
-    avatar_url = Column(String, nullable=True)  # ✅ تم إضافته هنا
     created_at = Column(DateTime, default=lambda: datetime.now(timezone.utc))
 
     posts = relationship("Post", back_populates="owner")
